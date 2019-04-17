@@ -7,7 +7,7 @@ const qrcode = require('qrcode-terminal');
 const TEMP_DIR = path.resolve('/tmp/ota');
 const OTA_SERVER_PORT = 8080;
 const ITMS_MANIFEST_URL = 'itms-services://?action=download-manifest&url=${DOMAIN}';
-const DEFAULT_OTA_MANIFEST_PATH = path.resolve('./static/manifest.plist');
+const DEFAULT_OTA_MANIFEST_PATH = path.join(__dirname, '../static/manifest.plist');
 
 async function ota({ ipa, apk, name, version, package }) {
   if (typeof name !== 'string') {

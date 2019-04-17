@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const args  = require('yargs').argv;
 const chalk = require('chalk');
-const ota   = require('../');
+const ota   = require('./');
 
 const payload = {
   ipa: args.ipa,
