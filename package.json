@@ -4,8 +4,9 @@
   "description": "Over The Air distribution for Android and iOS",
   "main": "src/index.js",
   "scripts": {
-    "test": "nodemon test/index.test"
+    "test": "nodemon test/index.test.js"
   },
+  "bin": "./src/cli.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ffrm/ota.git"
@@ -18,10 +19,12 @@
   },
   "homepage": "https://github.com/ffrm/ota#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
     "express": "^4.16.4",
     "fs-extra": "^7.0.1",
     "ngrok": "^3.1.1",
-    "qrcode-terminal": "^0.12.0"
+    "qrcode-terminal": "^0.12.0",
+    "yargs": "^13.2.2"
   },
   "devDependencies": {
     "dotenv": "^7.0.0"
