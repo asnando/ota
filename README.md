@@ -22,6 +22,16 @@ ota({
 });
 ```
 
+or using the <b>cli</b>
+
+```bash
+./node_modules/bin/ota \
+  --app_name "MyAppName" \
+  --app_version 1.0.0 \
+  --package_name "com.myapp.package.name" \
+  --apk path/to/file.apk
+```
+
 ### Run the script
 ```bash
 node index.js
