@@ -9,6 +9,8 @@ const OTA_SERVER_PORT = 8080;
 const ITMS_MANIFEST_URL = 'itms-services://?action=download-manifest&url=${DOMAIN}';
 const DEFAULT_OTA_MANIFEST_PATH = path.join(__dirname, '../static/manifest.plist');
 
+const isDef = value => (value !== null && typeof value !== 'undefined');
+
 async function ota({ ipa, apk, name, version, package }) {
   if (typeof name !== 'string') {
     throw new Error(`Undefined app name!`);
@@ -32,36 +34,47 @@ async function ota({ ipa, apk, name, version, package }) {
       ipa: app
     });
   } else if (/\.apk$/.test(app)) {
-    throw new Error(`Support for .apk files not yet supported.`);
+    // throw new Error(`Support for .apk files not yet supported.`);
+    return await createOTADistributionServer({
+      name,
+      version,
+      package,
+      apk: app,
+    });
   }
 }
 
-async function createServer({ ipa, manifest }) {
+async function createServer({ ipa, apk, manifest }) {
   console.log(`Creating express server…`);
   const port = OTA_SERVER_PORT;
   const server = express();
   server
     .get('/', (req, res) => res.end(fs.readFileSync(manifest)))
-    .get('/ipa', (req, res) => res.end(fs.readFileSync(ipa)))
+    .get('/ipa', (req, res) => res.download(ipa))
+    .get('/apk', (req, res) => res.download(apk))
     .listen(port, () => {
       console.log(`Express server booted on ${port}`);
     });
   return server;
 };
 
-async function createOTADistributionServer({ name, version, package, ipa }) {
+async function createOTADistributionServer({ name, version, package, ipa, apk }) {
   const tmp = createTempDir();
   const proxyDomain = await startProxyServer();
-  const manifestPath = await touchManifest({
-    name,
-    version,
-    package,
-    ipa: `${proxyDomain}/ipa`,
-    tmp,
-  });
-  const server = await createServer({ ipa, manifest: manifestPath });
-  const itms = ITMS_MANIFEST_URL.replace(/\$\{DOMAIN\}/, proxyDomain);
-  displayDownloadQRCode(itms);
+  if (isDef(ipa)) {
+    const manifestPath = await touchManifest({
+      name,
+      version,
+      package,
+      ipa: `${proxyDomain}/ipa`,
+      tmp,
+    });
+    const server = await createServer({ ipa, manifest: manifestPath });
+    const itms = ITMS_MANIFEST_URL.replace(/\$\{DOMAIN\}/, proxyDomain);
+    displayDownloadQRCode(itms);
+  }
+  const server = await createServer({ apk });
+  displayDownloadQRCode(`${proxyDomain}/apk`);
 }
 
 function createTempDir() {
