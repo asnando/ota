@@ -72,9 +72,10 @@ async function createOTADistributionServer({ name, version, package, ipa, apk })
     const server = await createServer({ ipa, manifest: manifestPath });
     const itms = ITMS_MANIFEST_URL.replace(/\$\{DOMAIN\}/, proxyDomain);
     displayDownloadQRCode(itms);
+  } else {
+    const server = await createServer({ apk });
+    displayDownloadQRCode(`${proxyDomain}/apk`);
   }
-  const server = await createServer({ apk });
-  displayDownloadQRCode(`${proxyDomain}/apk`);
 }
 
 function createTempDir() {
