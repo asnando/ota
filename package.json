@@ -1,7 +1,7 @@
 {
   "name": "over-the-air",
   "version": "1.0.1",
-  "description": "Over The Air distribution for Android and iOS",
+  "description": "🚀 Distribute Android and iOS apps over the air",
   "main": "src/index.js",
   "scripts": {
     "test": "nodemon test/index.test.js"
