@@ -1,5 +1,5 @@
 {
-  "name": "ota",
+  "name": "over-the-air",
   "version": "1.0.1",
   "description": "Over The Air distribution for Android and iOS",
   "main": "src/index.js",

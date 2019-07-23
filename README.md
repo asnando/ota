@@ -1,17 +1,37 @@
 # OTA
-🚀 Over The Air distribution for Android and iOS (Android not yet supported).
+🚀 Distribute yours ```apk``` and ```ipa``` files over the air. Uses [ngrok](https://github.com/inconshreveable/ngrok) for public distribution urls. Just scan the qrcode from the terminal to install the app.
 
 # Installation
 ```bash
-npm install https://github.com/ffrm/ota --save-dev
+npm install over-the-air --save-dev
+# or install it globally
+npm install over-the-air --global
 ```
 
-# Usage
+# Args
+| Name | Description |
+| ---- | ----------- |
+| app_name | App Name
+| app_version | App version. Use the semantic version (```major.minor.patch```).
+| package_name | App package name
+| apk | Location of the .apk file to distribute
+| ipa | Location of the .ipa file to distribute
 
-### Create your script
+<i>When distributing ```.ipa``` files it will copy the default ```manifest.plist``` file from the ```static``` folder so iPhone/iPad could show the installation dialog after qrcode scan.</i>
+
+# Using the cli
+```bash
+over-the-air --app_name "MyAppName" \
+  --app_version 1.0.0 \
+  --package_name "com.myapp.package.name" \
+  --apk path/to/file.apk \
+  --ipa path/to/file.ipa
+```
+
+# Using node script
 ```javascript
 // index.js
-const ota = require('ota');
+const ota = require('over-the-air');
 
 ota({
   name: 'MyAppName',
@@ -22,17 +42,8 @@ ota({
 });
 ```
 
-or using the <b>cli</b>
+then
 
-```bash
-./node_modules/bin/ota \
-  --app_name "MyAppName" \
-  --app_version 1.0.0 \
-  --package_name "com.myapp.package.name" \
-  --apk path/to/file.apk
-```
-
-### Run the script
 ```bash
 node index.js
 ```
